@@ -1013,7 +1013,6 @@ function formatInput(input_string: string) {
 
 //Loop through an array of numbers and check if every difference between them is at least 1 and maximum 3.
 function checkIfDifferenceSafe(input_array: number[]) {
-  let unsafeCounter = 0;
   for (let i = 0; input_array.length - 1 > i; i++) {
     if (
       !(
@@ -1021,50 +1020,44 @@ function checkIfDifferenceSafe(input_array: number[]) {
         Math.abs(input_array[i] - input_array[i + 1]) >= 1
       )
     )
-      unsafeCounter += 1;
+      return false;
   }
 
-  if (unsafeCounter > 1) return { state: false, unsafeCount: unsafeCounter };
-
-  if (unsafeCounter == 1) return { state: true, unsafeCount: 1 };
-
-  return { state: true, unsafeCount: 0 };
+  return true;
 }
 
 //Check the differences between numbers are all increasing or all decreasing. Return false if there are increasing and decreasing differences in the same array, also if there is no difference (0).
 function checkIncreasingOrDecreasing(input_array: number[]) {
   let arr: number[] = [];
-
   for (let i = 0; input_array.length - 1 > i; i++) {
     arr.push(Math.sign(input_array[i] - input_array[i + 1]));
   }
-
-  const reduced = arr.reduce((acc, ac) => {
-    acc[ac] = (acc[ac] || 0) + 1;
-
-    return acc;
-  }, {});
-
-  //If all levels are increasing or decreasing, return true
-  if (arr.every((n) => n == arr[0])) return { state: true, unsafeCount: 0 };
-
-  if (Object.values(reduced).includes(1))
-    return { state: true, unsafeCount: 1 };
-
-  return { state: false, unsafeCount: 2 };
+  return arr.every((n) => n == arr[0]);
 }
 
-//Count which reports (inner arrays of numbers) are safe performing the checks previously defined as functions.
+//Count which reports (inner arrays of nubmers) are safe performing the checks previously defined as functions.
 function countSafeReports(formattedArrayInput: number[][]) {
   let result = 0;
   let arr: number[][] = [];
 
   for (let j = 0; formattedArrayInput.length > j; j++) {
+    console.log("------------------------------------");
+    console.log("INPUT ARRAY", formattedArrayInput[j]);
+    for (let i = 0; i < formattedArrayInput[j].length; i++) {
+      console.log(
+        arrayValueRemover(formattedArrayInput[j], i),
+        "------- J:",
+        j
+      );
+    }
     if (
       checkIfDifferenceSafe(formattedArrayInput[j]) &&
       checkIncreasingOrDecreasing(formattedArrayInput[j])
     )
       result += 1;
+    else {
+      arr.push(formattedArrayInput[j]);
+    }
   }
 
   return result;
