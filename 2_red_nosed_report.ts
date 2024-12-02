@@ -1024,9 +1024,11 @@ function checkIfDifferenceSafe(input_array: number[]) {
       unsafeCounter += 1;
   }
 
-  if (unsafeCounter > 1) return false;
+  if (unsafeCounter > 1) return { state: false, unsafeCount: unsafeCounter };
 
-  return true;
+  if (unsafeCounter == 1) return { state: true, unsafeCount: 1 };
+
+  return { state: true, unsafeCount: 0 };
 }
 
 //Check the differences between numbers are all increasing or all decreasing. Return false if there are increasing and decreasing differences in the same array, also if there is no difference (0).
@@ -1044,13 +1046,12 @@ function checkIncreasingOrDecreasing(input_array: number[]) {
   }, {});
 
   //If all levels are increasing or decreasing, return true
-  if (arr.every((n) => n == arr[0])) return true;
+  if (arr.every((n) => n == arr[0])) return { state: true, unsafeCount: 0 };
 
-  if (!Object.keys(reduced).includes("0")) return true;
+  if (Object.values(reduced).includes(1))
+    return { state: true, unsafeCount: 1 };
 
-  if (Object.values(reduced).includes(1)) return true;
-
-  return reduced;
+  return { state: false, unsafeCount: 2 };
 }
 
 //Count which reports (inner arrays of numbers) are safe performing the checks previously defined as functions.
@@ -1059,8 +1060,11 @@ function countSafeReports(formattedArrayInput: number[][]) {
 
   for (let j = 0; formattedArrayInput.length > j; j++) {
     if (
-      checkIfDifferenceSafe(formattedArrayInput[j]) &&
-      checkIncreasingOrDecreasing(formattedArrayInput[j])
+      checkIfDifferenceSafe(formattedArrayInput[j]).state &&
+      checkIncreasingOrDecreasing(formattedArrayInput[j]).state &&
+      checkIncreasingOrDecreasing(formattedArrayInput[j]).unsafeCount +
+        checkIfDifferenceSafe(formattedArrayInput[j]).unsafeCount ==
+        1
     ) {
       result += 1;
     }
