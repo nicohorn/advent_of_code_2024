@@ -1038,16 +1038,37 @@ function checkIncreasingOrDecreasing(input_array: number[]) {
 //Count which reports (inner arrays of nubmers) are safe performing the checks previously defined as functions.
 function countSafeReports(formattedArrayInput: number[][]) {
   let result = 0;
+  let arr: number[][] = [];
 
   for (let j = 0; formattedArrayInput.length > j; j++) {
+    console.log("------------------------------------");
+    console.log("INPUT ARRAY", formattedArrayInput[j]);
+    for (let i = 0; i < formattedArrayInput[j].length; i++) {
+      console.log(
+        arrayValueRemover(formattedArrayInput[j], i),
+        "------- J:",
+        j
+      );
+    }
     if (
       checkIfDifferenceSafe(formattedArrayInput[j]) &&
       checkIncreasingOrDecreasing(formattedArrayInput[j])
     )
       result += 1;
+    else {
+      arr.push(formattedArrayInput[j]);
+    }
   }
 
   return result;
+}
+
+function arrayValueRemover(input_array: number[], index: number) {
+  let arr = [...input_array]; // spreads all elements into new array
+  for (let i = 0; i < input_array.length; i++) {
+    arr.splice(i, 1);
+  }
+  return arr;
 }
 
 console.log(countSafeReports(formatInput(input_string2)));
