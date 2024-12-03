@@ -1038,37 +1038,33 @@ function checkIncreasingOrDecreasing(input_array: number[]) {
 //Count which reports (inner arrays of nubmers) are safe performing the checks previously defined as functions.
 function countSafeReports(formattedArrayInput: number[][]) {
   let result = 0;
-  let arr: number[][] = [];
 
   for (let j = 0; formattedArrayInput.length > j; j++) {
-    console.log("------------------------------------");
-    console.log("INPUT ARRAY", formattedArrayInput[j]);
-    for (let i = 0; i < formattedArrayInput[j].length; i++) {
-      console.log(
-        arrayValueRemover(formattedArrayInput[j], i),
-        "------- J:",
-        j
-      );
-    }
     if (
       checkIfDifferenceSafe(formattedArrayInput[j]) &&
       checkIncreasingOrDecreasing(formattedArrayInput[j])
     )
       result += 1;
     else {
-      arr.push(formattedArrayInput[j]);
+      if (reportDampener(formattedArrayInput[j])) result += 1;
     }
   }
 
   return result;
 }
 
-function arrayValueRemover(input_array: number[], index: number) {
-  let arr = [...input_array]; // spreads all elements into new array
+//Handle the 2nd requirement: if the array has a leven that when removed, the report satisfies the first set of requirements, the report automatically is safe.
+function reportDampener(input_array: number[]) {
+  let arr: number[] = [];
+
   for (let i = 0; i < input_array.length; i++) {
+    arr = [...input_array];
     arr.splice(i, 1);
+    if (checkIfDifferenceSafe(arr) && checkIncreasingOrDecreasing(arr))
+      return true;
   }
-  return arr;
+
+  return false;
 }
 
 console.log(countSafeReports(formatInput(input_string2)));
