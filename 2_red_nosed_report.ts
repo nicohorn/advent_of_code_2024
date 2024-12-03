@@ -1063,7 +1063,6 @@ function reportDampener(input_array: number[]) {
     if (checkIfDifferenceSafe(arr) && checkIncreasingOrDecreasing(arr))
       return true;
   }
-
   return false;
 }
 
