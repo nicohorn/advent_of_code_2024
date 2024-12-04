@@ -1,7 +1,7 @@
 import {
   sumAndMultiplyNumbers,
   transformInputToArrayOfValues,
-} from "./3_mul_it_over";
+} from "./3_mull_it_over";
 
 describe("Multiplication tests", () => {
   test("should return 161", () => {
