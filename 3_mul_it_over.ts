@@ -23,9 +23,14 @@ export function transformInputToArrayOfValues(input: string) {
   }
 
   //The g flag makes it return all matches rather than just the first one.
-  const validInputStrings = input.match(/mul\([0-9]{1,3},[0-9]{1,3}\)/g)!;
+  const validInputStrings = input.match(
+    /do\(\)|don't\(\)|mul\([0-9]{1,3},[0-9]{1,3}\)/g
+  )!;
+
+  //Handle the second requirement
+  const validArray = handleDosAndDonts(validInputStrings);
   //Take the valid matches (the ones that have "mul(n1,n2)" where n1 and n2 are numbers with 1 to 3 digits), extract the mul and parenthesis, leaving an array of two numbers to multiply.
-  const inputStringsToNumbersArray = validInputStrings?.map((s) => {
+  const inputStringsToNumbersArray = validArray?.map((s) => {
     try {
       //Take only the numbers, without the "mul" and parenthesis.
       const numbersString = s.match(/[0-9]{1,3},[0-9]{1,3}/);
@@ -65,6 +70,26 @@ export function sumAndMultiplyNumbers(input_array: number[][]) {
     console.log("Error while multiplying and adding numbers");
     return 0;
   }
+}
+
+function handleDosAndDonts(input_string: string[]) {
+  let skip = 0;
+  let validArray: string[] = [];
+
+  for (let i = 0; i < input_string.length; i++) {
+    if (input_string[i] == "don't()") {
+      skip = 1;
+      i++;
+    } else if (input_string[i] == "do()") {
+      skip = 0;
+      i++;
+    }
+    if (skip == 0) {
+      validArray.push(input_string[i]);
+    }
+  }
+
+  return validArray;
 }
 
 console.log(sumAndMultiplyNumbers(transformInputToArrayOfValues(input())));
