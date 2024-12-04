@@ -13,4 +13,8 @@ describe("Multiplication tests", () => {
       )
     ).toBe(161);
   });
+
+  test("should return 0", () => {
+    expect(sumAndMultiplyNumbers(transformInputToArrayOfValues(""))).toBe(0);
+  });
 });

@@ -67,5 +67,4 @@ export function sumAndMultiplyNumbers(input_array: number[][]) {
   }
 }
 
-// console.log(transformInputToArrayOfValues(input()));
-// console.log(sumAndMultiplyNumbers(transformInputToArrayOfValues(input())));
+console.log(sumAndMultiplyNumbers(transformInputToArrayOfValues(input())));
