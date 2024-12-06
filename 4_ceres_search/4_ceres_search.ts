@@ -1,7 +1,7 @@
 import fs from "fs";
 
 function readInput() {
-  return fs.readFileSync("input4.txt", "utf-8");
+  return fs.readFileSync("input.txt", "utf-8");
 }
 
 function transformInput(rawInput: string) {

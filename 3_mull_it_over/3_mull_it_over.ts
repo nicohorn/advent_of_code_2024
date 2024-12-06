@@ -2,7 +2,7 @@ import { readFileSync } from "fs";
 
 export const input = () => {
   try {
-    return readFileSync("input3.txt", "utf8");
+    return readFileSync("input.txt", "utf8");
   } catch (e) {
     console.log("Error reading input file");
     return "";
